@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="edit-container">
+    <h2>Edit Item: <span class="item-name">{{ item.name }}</span></h2>
+
+    <div class="edit-card">
+        <!-- Header -->
+        <div class="edit-header">
+            <span class="item-id">Item ID: {{ item.id }}</span>
+            <span class="category-tag {{ item.category|slugify }}">{{ item.category }}</span>
+        </div>
+
+        <!-- Body -->
+        <div class="edit-body">
+            <!-- Item Image -->
+            <div class="item-image">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                {% else %}
+                    <img src="{% static 'images/default_item.png' %}" alt="Default Item">
+                {% endif %}
+            </div>
+
+            <!-- Item Form -->
+            <div class="item-details">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <label for="id_name">Name:</label>
+                    <input type="text" id="id_name" name="name" value="{{ form.name.value }}" required>
+
+                    <label for="id_qty">Quantity:</label>
+                    <input type="number" id="id_qty" name="qty" value="{{ form.qty.value }}" min="0" required>
+
+                    <label for="id_description">Description:</label>
+                    <textarea id="id_description" name="description" rows="4">{{ form.description.value }}</textarea>
+
+                    <label for="id_category">Category:</label>
+                    <select id="id_category" name="category">
+                        {% for cat in form.fields.category.choices %}
+                            <option value="{{ cat.0 }}" {% if form.category.value == cat.0 %}selected{% endif %}>
+                                {{ cat.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="id_image">Image:</label>
+                    <input type="file" id="id_image" name="image">
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save">Save Changes</button>
+                        <a href="{% url 'inventory' %}" class="btn-cancel">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Container */
+.edit-container {
+    max-width: 1000px;
+    margin: 10px auto 0 auto; /* keep it up */
+    padding-bottom: 40px; /* added to prevent buttons from being cut */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c2c2c;
+
+}
+
+
+/* Card */
+.edit-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 20px 20px 20px 20px; /* uniform padding */
+    gap: 20px;
+}
+
+/* Header */
+.edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.category-tag {
+    background: #2d2970;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+/* Body */
+.edit-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Item Image */
+.item-image img {
+    max-width: 200px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Form */
+.item-details {
+    flex: 1;
+}
+
+.item-details form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-details label {
+    font-weight: 600;
+}
+
+.item-details input[type="text"],
+.item-details input[type="number"],
+.item-details textarea,
+.item-details select,
+.item-details input[type="file"] {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border 0.2s;
+}
+
+.item-details input:focus,
+.item-details textarea:focus,
+.item-details select:focus {
+    border-color: #2d2970;
+    outline: none;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-save {
+    background: #2d2970;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-save:hover {
+    background: #1a1635;
+}
+
+.btn-cancel {
+    background: #e74c3c;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .edit-body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .item-image img {
+        max-width: 100%;
+    }
+
+    .item-details {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

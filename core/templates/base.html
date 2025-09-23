@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrailLend Dashboard</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <img src="{% static 'TrailLend Logo.png' %}" alt="TrailLend Logo" class="avatar">
+      <span>TrailLend</span>
+    </div>
+    <div class="header-title">
+      Barangay Kauswagan - General Service Office
+    </div>
+    <div class="header-right">
+      <i class="fa-solid fa-bell"></i>
+      <i class="fa-solid fa-user-circle"></i>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar"> 
+        <p class="menu-label">MENU</p>
+
+        <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <i class="fa-solid fa-gauge"></i> Dashboard
+        </a>
+
+        <a href="{% url 'inventory' %}" class="{% if request.resolver_match.url_name == 'inventory' %}active{% endif %}">
+            <i class="fas fa-box"></i> Inventory
+        </a>
+
+        <a href="{% url 'verification' %}" class="{% if request.resolver_match.url_name == 'verification' %}active{% endif %}">
+            <i class="fa-solid fa-check-circle"></i> Verification
+        </a>
+
+        <a href="{% url 'history_log' %}" class="{% if request.resolver_match.url_name == 'history_log' %}active{% endif %}">
+            <i class="fa-solid fa-clock-rotate-left"></i> History Log
+        </a>
+
+        <a href="{% url 'damage_report' %}" class="{% if request.resolver_match.url_name == 'damage_report' %}active{% endif %}">
+            <i class="fa-solid fa-file-lines"></i> Damage Report
+        </a>
+
+        <a href="{% url 'statistics' %}" class="{% if request.resolver_match.url_name == 'statistics' %}active{% endif %}">
+            <i class="fa-solid fa-chart-bar"></i> Statistics
+        </a>
+
+        <a href="{% url 'list_of_users' %}" class="{% if request.resolver_match.url_name == 'list_of_users' %}active{% endif %}">
+            <i class="fa-solid fa-users"></i> List of Users
+        </a>  
+        
+        <a href="{% url 'change_pass' %}" class="{% if request.resolver_match.url_name == 'change_pass' %}active{% endif %}">
+            <i class="fa-solid fa-key"></i> Change Pass
+        </a>
+
+
+        <a href="{% url 'logout' %}">
+            <i class="fa-solid fa-right-from-bracket"></i> Log out
+        </a>
+    </aside>
+
+
+    <!-- Main content -->
+    <main class="content">
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+
+  <script>
+    // Sidebar active state (if not handled by Django)
+    const sidebarLinks = document.querySelectorAll(".sidebar a");
+    sidebarLinks.forEach(link => {
+      link.addEventListener("click", function () {
+        sidebarLinks.forEach(l => l.classList.remove("active"));
+        this.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="users-container">
+    <h2>Users List</h2>
+
+    <!-- Filters -->
+    <div class="filters">
+        <input type="text" placeholder="Search text">
+        <select>
+            <option>All statuses</option>
+            <option>Active</option>
+            <option>Inactive</option>
+            <option>Suspended</option>
+        </select>
+        <input type="date" placeholder="From">
+        <input type="date" placeholder="To">
+        <select>
+            <option>10 rows</option>
+            <option>25 rows</option>
+            <option>50 rows</option>
+        </select>
+    </div>
+
+    <!-- Users Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Users ID</th>
+                <th>Users Name</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th>Date Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if user.is_active %}
+                        <span class="status active">Active</span>
+                    {% else %}
+                        <span class="status inactive">Inactive</span>
+                    {% endif %}
+                </td>
+                <td>{{ user.date_created }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No users found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+.users-container {
+    padding: 15px;
+    font-size: 14px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.filters input, .filters select {
+    padding: 4px 6px;
+    font-size: 14px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+}
+
+th {
+    background: #f7f7f7;
+}
+
+.status {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.status.active { background: #d4edda; color: #155724; }
+.status.inactive { background: #f8d7da; color: #721c24; }
+</style>
+{% endblock %}

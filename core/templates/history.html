@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="history-logs">
+    <h2>Transaction History</h2>
+    <p>Total Transactions: {{ transactions|length }}</p>
+
+    <!-- Filters -->
+    <div class="filters">
+        <input type="text" id="searchBox" placeholder="Search text">
+
+        <select id="statusFilter">
+            <option value="">All statuses</option>
+            <option value="returned">Returned</option>
+            <option value="borrowed">Borrowed</option>
+        </select>
+
+        <label>From
+            <input type="date" id="fromDate">
+        </label>
+
+        <label>To
+            <input type="date" id="toDate">
+        </label>
+
+        <select id="rowsPerPage">
+            <option value="10">10 rows</option>
+            <option value="25">25 rows</option>
+            <option value="50">50 rows</option>
+        </select>
+    </div>
+
+    <!-- Transactions Table -->
+    <div class="table-wrapper">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>User Name</th>
+                    <th>Item Name</th>
+                    <th>Date & Time Receive</th>
+                    <th>Date & Time Returned</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td>{{ t.transaction_id }}</td>
+                    <td>{{ t.user_name }}</td>
+                    <td>{{ t.item_name }}</td>
+                    <td>{{ t.date_receive }}</td>
+                    <td>{{ t.date_returned }}</td>
+                    <td>{{ t.status }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No transactions found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+.history-logs {
+    font-family: "Inter", sans-serif;
+    padding: 20px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.filters input,
+.filters select {
+    padding: 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.history-table th {
+    text-align: left;
+    padding: 10px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+}
+
+.history-table td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.history-table tr:hover {
+    background: #f3f4f6;
+}
+</style>
+{% endblock %}

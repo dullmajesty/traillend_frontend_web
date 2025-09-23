@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+  <h2>Create Item</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Item Image -->
+    <div class="form-group image-group">
+      <div class="image-preview">
+        <img id="preview" src="placeholder.png" alt="Image Preview">
+      </div>
+      <div class="upload-section">
+        <label for="itemImage">Item Image</label>
+        <input id="itemImage" name="image" type="file" accept="image/*" onchange="previewImage(event)">
+      </div>
+    </div>
+
+    <!-- Item Name -->
+    <div class="form-group">
+      <label for="itemName">Item Name</label>
+      <input id="itemName" name="name" type="text" placeholder="Enter item name" required>
+
+    </div>
+
+    <!-- Quantity + Category in one row -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="quantity">Quantity</label>
+      <input id="quantity" name="qty" type="number" placeholder="Enter quantity" required>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category</label>
+      <select id="category" name="category">
+        <option disabled selected>Select category</option>
+        <option>Seating</option>
+        <option>Tables</option>
+        <option>Tent</option>
+        <option>Venues</option>
+        <option>Sport Equipment</option>
+        <option>Cooling Ventilation</option>
+        <option>Water Supply</option>
+        <option>Electrical Accessories</option>
+        <option>Audio-Visual Equipment</option>
+        <option>Transportation</option>
+      </select>
+    </div>
+  </div>
+
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" placeholder="Enter description"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn">Save Item</button>
+  </form>
+</div>
+
+
+
+
+<style>
+
+/* General */
+body {
+  font-family: "Inter", sans-serif;
+  background: #f3f4f6;
+  margin: 0;
+}
+
+/* Card container */
+.card {
+  background: #ffffff;
+  padding: 30px;                 /* increased from 30px to 40px */
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 750px;              /* slightly wider */
+  margin: 20px auto;             /* adds space above and below */
+  transition: transform 0.2s ease;
+  margin-bottom: 25px;           /* bottom gap */
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Title */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #1a1635;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make rows flex */
+.form-row {
+  display: flex;
+  gap: 12px;            /* space between fields */
+  margin-bottom: 18px;  /* same spacing as form-group */
+}
+
+/* Allow each input to share space */
+.form-row .form-group {
+  flex: 1;             /* take equal width */
+  margin-bottom: 0;    /* prevent double spacing */
+}
+
+
+label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+  outline: none;
+}
+
+textarea {
+  resize: none;
+  min-height: 100px;
+}
+
+/* Image section */
+.image-group {
+  display: flex;           /* this makes it a proper flex container */
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;         /* allows wrapping on small screens */
+  position: relative;      /* creates a new stacking context */
+  z-index: 1;              /* keeps it behind the button */
+}
+
+
+
+.image-preview {
+  width: 160px;
+  height: 160px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: fit;
+}
+
+.upload-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Button */
+.btn {
+  display: block;
+  width: 100%;
+  background: #4f46e5;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.btn:hover {
+  background: #3730a3;
+  transform: scale(1.02);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+
+
+</style>
+
+<script>
+
+  function previewImage(event) {
+  const reader = new FileReader();
+  reader.onload = function () {
+    const output = document.getElementById('preview');
+    output.src = reader.result;
+  };
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+document.getElementById("itemForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  alert("Item saved successfully!");
+});
+
+
+
+</script>
+{% endblock %}
